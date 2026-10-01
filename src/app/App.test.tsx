@@ -19,7 +19,7 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: /Times/ }));
     expect(screen.getByText('Bora sortear?')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Regras/ }));
-    expect(screen.getByText('Regras', { selector: 'div' })).toBeInTheDocument();
+    expect(screen.getByText('Jogadores de linha por time')).toBeInTheDocument();
   });
 
   it('shows the present-count badge on the Presença tab', () => {

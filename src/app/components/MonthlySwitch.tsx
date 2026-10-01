@@ -6,6 +6,7 @@ export interface MonthlySwitchProps {
   label?: string;
   hint?: string;
   icon?: string;
+  disabled?: boolean;
   onChange?: (value: boolean) => void;
 }
 
@@ -15,12 +16,14 @@ export function MonthlySwitch({
   label = 'Mensalista',
   hint = 'Paga por mês e tem prioridade na lista',
   icon = 'workspace_premium',
+  disabled,
   onChange,
 }: MonthlySwitchProps) {
   const [internal, setInternal] = useState(defaultChecked);
   const on = checked ?? internal;
 
   function toggle() {
+    if (disabled) return;
     const next = !on;
     if (checked === undefined) setInternal(next);
     onChange?.(next);
@@ -33,6 +36,8 @@ export function MonthlySwitch({
       role="switch"
       aria-checked={on}
       aria-label={label}
+      disabled={disabled}
+      style={disabled ? { opacity: 0.45 } : undefined}
       onClick={toggle}
     >
       <span className="pl-toggle-icon">

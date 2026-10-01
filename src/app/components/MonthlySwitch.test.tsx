@@ -22,4 +22,11 @@ describe('MonthlySwitch', () => {
     render(<MonthlySwitch checked label="Equilibrar pela nota média" hint="Usa a nota média" />);
     expect(screen.getByRole('switch', { name: /Equilibrar pela nota média/ })).toHaveClass('pl-toggle-row-on');
   });
+
+  it('does not toggle when disabled', async () => {
+    const onChange = vi.fn();
+    render(<MonthlySwitch disabled onChange={onChange} />);
+    await userEvent.click(screen.getByRole('switch'));
+    expect(onChange).not.toHaveBeenCalled();
+  });
 });
