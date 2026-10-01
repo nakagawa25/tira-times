@@ -15,7 +15,7 @@ describe('App', () => {
     render(<App />);
     expect(screen.getByText('Nenhum jogador ainda')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Presença/ }));
-    expect(screen.getByText('Presença', { selector: 'div' })).toBeInTheDocument();
+    expect(screen.getByText('Quem veio?')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Times/ }));
     expect(screen.getByText('Times', { selector: 'div' })).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Regras/ }));

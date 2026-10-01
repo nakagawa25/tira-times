@@ -30,7 +30,6 @@ export function PresencaScreen({ onDrawn }: PresencaScreenProps) {
 
   return (
     <div>
-      <div style={{ display: 'none' }}>Presença</div>
       <AppBar title="Quem veio?" subtitle={formatDateLong(new Date())} large />
       <p>
         {presentPlayers.length} de {players.length} presentes · {presentGoalkeepers} goleiros
