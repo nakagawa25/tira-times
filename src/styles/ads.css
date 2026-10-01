@@ -1,0 +1,12 @@
+.pl-ad-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  border: 1.5px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+  color: var(--ink-muted);
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--surface-200);
+}
