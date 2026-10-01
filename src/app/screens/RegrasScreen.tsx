@@ -72,7 +72,7 @@ export function RegrasScreen() {
         <p>{describeGoalPlan(summary.goal)}</p>
         {summary.full > 0 && <p>{summary.full} time(s) completo(s)</p>}
         {summary.partial.map((entry, i) => (
-          <p key={i}>1 time com {entry.size} — completar com 1 de fora</p>
+          <p key={i}>1 time com {entry.size} — completar com {entry.missing} de fora</p>
         ))}
         {warnings.map((w) => (
           <p key={w}>{w}</p>

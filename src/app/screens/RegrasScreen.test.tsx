@@ -37,6 +37,21 @@ describe('RegrasScreen', () => {
     expect(screen.getByRole('switch', { name: 'Espalhar características' })).toBeDisabled();
   });
 
+  it('shows the real missing count, not a hardcoded 1, when teams are far from full', () => {
+    for (let i = 0; i < 6; i++) {
+      useAppStore.getState().addPlayer({
+        id: `g${i}`,
+        name: `g${i}`,
+        positions: ['QQ'],
+        monthly: false,
+        skills: { attack: 3, defense: 3, speed: 3, skill: 3 },
+      });
+    }
+    render(<RegrasScreen />);
+    // 6 line players across 3 teams of 5 => each team has 2, missing 3.
+    expect(screen.getAllByText('1 time com 2 — completar com 3 de fora')).toHaveLength(3);
+  });
+
   it('matches the briefing preview with 15 presentes', () => {
     sampleSquad.slice(0, 15).forEach((p) => useAppStore.getState().addPlayer(p));
     render(<RegrasScreen />);
