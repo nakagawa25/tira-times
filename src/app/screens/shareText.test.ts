@@ -19,6 +19,11 @@ describe('describeGoalkeepers', () => {
     const draw = { teams: [], goalkeepers: [], rotating: 0, mode: 'perTeam', bench: [], cost: 0 } as DrawResult;
     expect(describeGoalkeepers(draw)).toBe('Cada time com seu goleiro');
   });
+
+  it('two fixed goalkeepers: names both, joined with "e"', () => {
+    const draw = { teams: [], goalkeepers: [p('g1', 'Marcão'), p('g2', 'Serginho')], rotating: 0, mode: 'fixed', bench: [], cost: 0 } as DrawResult;
+    expect(describeGoalkeepers(draw)).toBe('Marcão e Serginho');
+  });
 });
 
 describe('buildShareText', () => {
