@@ -1,0 +1,331 @@
+{
+  "app": "tira-times",
+  "version": 1,
+  "exportedAt": "2026-10-01T20:00:00-03:00",
+  "group": {
+    "name": "Pelada de Quinta"
+  },
+  "rules": {
+    "linePerTeam": 5,
+    "teams": 3,
+    "goalkeepers": "fixed",
+    "balance": true,
+    "traits": true,
+    "positions": true,
+    "monthlyPriority": true
+  },
+  "players": [
+    {
+      "id": "p01",
+      "name": "Marcão",
+      "positions": [
+        "GOL"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 1,
+        "defense": 4,
+        "speed": 2,
+        "skill": 3
+      }
+    },
+    {
+      "id": "p02",
+      "name": "Tiago Souza",
+      "positions": [
+        "ATA"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 5,
+        "defense": 2,
+        "speed": 4,
+        "skill": 5
+      }
+    },
+    {
+      "id": "p03",
+      "name": "Rafa",
+      "positions": [
+        "MEI",
+        "ATA"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 4,
+        "defense": 3,
+        "speed": 4,
+        "skill": 4
+      }
+    },
+    {
+      "id": "p04",
+      "name": "Dudu",
+      "positions": [
+        "DEF"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 2,
+        "defense": 5,
+        "speed": 3,
+        "skill": 3
+      }
+    },
+    {
+      "id": "p05",
+      "name": "Léo Martins",
+      "positions": [
+        "ALA"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 3,
+        "defense": 3,
+        "speed": 5,
+        "skill": 3
+      }
+    },
+    {
+      "id": "p06",
+      "name": "Bruno",
+      "positions": [
+        "QQ"
+      ],
+      "monthly": false,
+      "skills": {
+        "attack": 3,
+        "defense": 3,
+        "speed": 3,
+        "skill": 3
+      }
+    },
+    {
+      "id": "p07",
+      "name": "Caio",
+      "positions": [
+        "MEI"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 3,
+        "defense": 4,
+        "speed": 3,
+        "skill": 4
+      }
+    },
+    {
+      "id": "p08",
+      "name": "Gui",
+      "positions": [
+        "ATA"
+      ],
+      "monthly": false,
+      "skills": {
+        "attack": 4,
+        "defense": 2,
+        "speed": 5,
+        "skill": 3
+      }
+    },
+    {
+      "id": "p09",
+      "name": "Pedrinho",
+      "positions": [
+        "ALA",
+        "DEF"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 2,
+        "defense": 4,
+        "speed": 4,
+        "skill": 2
+      }
+    },
+    {
+      "id": "p10",
+      "name": "Fábio",
+      "positions": [
+        "DEF"
+      ],
+      "monthly": false,
+      "skills": {
+        "attack": 2,
+        "defense": 4,
+        "speed": 2,
+        "skill": 2
+      }
+    },
+    {
+      "id": "p11",
+      "name": "Juninho",
+      "positions": [
+        "MEI"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 4,
+        "defense": 2,
+        "speed": 3,
+        "skill": 5
+      }
+    },
+    {
+      "id": "p12",
+      "name": "Vini",
+      "positions": [
+        "QQ"
+      ],
+      "monthly": false,
+      "skills": {
+        "attack": 3,
+        "defense": 2,
+        "speed": 4,
+        "skill": 3
+      }
+    },
+    {
+      "id": "p13",
+      "name": "Neto",
+      "positions": [
+        "DEF",
+        "MEI"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 2,
+        "defense": 4,
+        "speed": 3,
+        "skill": 3
+      }
+    },
+    {
+      "id": "p14",
+      "name": "Beto",
+      "positions": [
+        "QQ"
+      ],
+      "monthly": false,
+      "skills": {
+        "attack": 2,
+        "defense": 3,
+        "speed": 2,
+        "skill": 2
+      }
+    },
+    {
+      "id": "p15",
+      "name": "Alemão",
+      "positions": [
+        "ATA"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 4,
+        "defense": 1,
+        "speed": 3,
+        "skill": 4
+      }
+    },
+    {
+      "id": "p16",
+      "name": "Serginho",
+      "positions": [
+        "GOL"
+      ],
+      "monthly": false,
+      "skills": {
+        "attack": 1,
+        "defense": 3,
+        "speed": 2,
+        "skill": 2
+      }
+    },
+    {
+      "id": "p17",
+      "name": "Paulo Henrique",
+      "positions": [
+        "MEI"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 3,
+        "defense": 3,
+        "speed": 3,
+        "skill": 4
+      }
+    },
+    {
+      "id": "p18",
+      "name": "Nando",
+      "positions": [
+        "ALA"
+      ],
+      "monthly": false,
+      "skills": {
+        "attack": 3,
+        "defense": 2,
+        "speed": 4,
+        "skill": 3
+      }
+    },
+    {
+      "id": "p19",
+      "name": "Diego",
+      "positions": [
+        "DEF"
+      ],
+      "monthly": true,
+      "skills": {
+        "attack": 2,
+        "defense": 5,
+        "speed": 3,
+        "skill": 2
+      }
+    },
+    {
+      "id": "p20",
+      "name": "Careca",
+      "positions": [
+        "QQ"
+      ],
+      "monthly": false,
+      "skills": {
+        "attack": 3,
+        "defense": 3,
+        "speed": 2,
+        "skill": 3
+      }
+    },
+    {
+      "id": "p21",
+      "name": "Wellington",
+      "positions": [
+        "ATA",
+        "ALA"
+      ],
+      "monthly": false,
+      "skills": {
+        "attack": 4,
+        "defense": 2,
+        "speed": 4,
+        "skill": 3
+      }
+    },
+    {
+      "id": "p22",
+      "name": "Thiago Jr",
+      "positions": [
+        "QQ"
+      ],
+      "monthly": false,
+      "skills": {
+        "attack": 2,
+        "defense": 2,
+        "speed": 3,
+        "skill": 2
+      }
+    }
+  ]
+}

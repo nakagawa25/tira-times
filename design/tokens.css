@@ -1,0 +1,43 @@
+/* Gerado de design/tokens.json — Design system Pelada */
+:root {
+  --surface-000: #ffffff; /* Cards, bottom sheets, campos. Sempre sobre surface-100. */
+  --surface-100: #f4f7f2; /* Fundo das telas — um branco levemente esverdeado, como linha de cal no gramado. */
+  --surface-200: #e8eee5; /* Preenchimento de chips não selecionados, trilho de switch, fundo das prévias. */
+  --line: #d6dfd2; /* Divisórias e contornos de card (1px). Nunca use sombra forte no lugar. */
+  --line-strong: #8a9a8d; /* Borda de controles (checkbox vazio, estrela vazia, campo). 3:1 sobre surface-000. */
+  --ink: #15231a; /* Texto principal sobre surface-000 e surface-100. */
+  --ink-muted: #56665a; /* Texto secundário, legendas e ícones inativos. 5.6:1 sobre surface-100. */
+  --pitch-100: #dcefe1; /* Tom suave do verde: chip selecionado, jogador presente, fundo de ícone. */
+  --pitch-600: #1b7a3e; /* Cor da marca e ação primária (botão Sortear, FAB, switch ligado). Texto branco 5.4:1. */
+  --pitch-700: #135f2f; /* Estado pressionado do primário e texto verde sobre pitch-100. */
+  --pitch-900: #0b3a1d; /* Verde profundo: fundo da capa e blocos de destaque escuros. */
+  --on-pitch: #ffffff; /* Texto e ícones sobre pitch-600, pitch-700 e cores de time escuras. */
+  --gold-500: #f2a900; /* Estrelas preenchidas (sempre com contorno gold-700) e destaque de craque. */
+  --gold-700: #a86f00; /* Contorno das estrelas preenchidas, garantindo 3:1 sobre branco. */
+  --gold-100: #fff0c7; /* Fundo do selo Mensalista. */
+  --gold-800: #6b4700; /* Texto do selo Mensalista sobre gold-100. */
+  --team-verde: #1b7a3e; /* Colete do Time 1. Texto on-pitch. */
+  --team-azul: #1f5fbf; /* Colete do Time 2. Texto on-pitch. */
+  --team-laranja: #c2410c; /* Colete do Time 3. Texto on-pitch. */
+  --team-grafite: #2f3538; /* Colete do Time 4. Texto on-pitch. */
+  --team-vermelho: #a8231b; /* Colete do Time 5. Texto on-pitch. */
+  --team-amarelo: #f2c200; /* Colete do Time 6. Texto ink (nunca branco). */
+  --danger: #b3261e; /* Excluir jogador, erro de importação. */
+  --warn-100: #fde7d9; /* Fundo de aviso: time incompleto, vaga aberta. */
+  --warn-700: #8f3408; /* Texto de aviso sobre warn-100. */
+  --scrim: rgba(21, 35, 26, 0.45); /* Fundo escurecido atrás de bottom sheets. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+  --shadow-1: 0 1px 2px rgba(21, 35, 26, 0.06), 0 1px 3px rgba(21, 35, 26, 0.08);
+  --shadow-2: 0 6px 20px rgba(21, 35, 26, 0.16);
+  --font-sans: "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-icons: "Material Symbols Rounded";
+}

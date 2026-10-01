@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Tira times — exportação de elenco",
+  "type": "object",
+  "required": ["players"],
+  "properties": {
+    "app": { "enum": ["tira-times", "pelada"] },
+    "version": { "type": "integer", "const": 1 },
+    "exportedAt": { "type": "string", "format": "date-time" },
+    "group": { "type": "object", "properties": { "name": { "type": "string" } } },
+    "rules": {
+      "type": "object",
+      "properties": {
+        "linePerTeam": { "type": "integer", "minimum": 2, "maximum": 11 },
+        "teams": { "type": "integer", "minimum": 2, "maximum": 6 },
+        "goalkeepers": { "enum": ["fixed", "perTeam"] },
+        "balance": { "type": "boolean" },
+        "traits": { "type": "boolean" },
+        "positions": { "type": "boolean" },
+        "monthlyPriority": { "type": "boolean" }
+      }
+    },
+    "players": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string", "minLength": 1 },
+          "positions": { "type": "array", "items": { "enum": ["GOL", "DEF", "ALA", "MEI", "ATA", "QQ"] } },
+          "monthly": { "type": "boolean" },
+          "skills": {
+            "type": "object",
+            "properties": {
+              "attack": { "type": "integer", "minimum": 0, "maximum": 5 },
+              "defense": { "type": "integer", "minimum": 0, "maximum": 5 },
+              "speed": { "type": "integer", "minimum": 0, "maximum": 5 },
+              "skill": { "type": "integer", "minimum": 0, "maximum": 5 }
+            }
+          }
+        }
+      }
+    }
+  }
+}
