@@ -19,7 +19,7 @@ export default function App() {
   return (
     <div className="pl-app">
       {tab === 'elenco' && <ElencoScreen onHideNavChange={setHideNav} onOpenPro={() => setProOpen(true)} />}
-      {tab === 'presenca' && <PresencaScreen />}
+      {tab === 'presenca' && <PresencaScreen onDrawn={() => setTab('times')} />}
       {tab === 'times' && <TimesScreen onOpenPro={() => setProOpen(true)} />}
       {tab === 'regras' && <RegrasScreen />}
       {!hideNav && (
