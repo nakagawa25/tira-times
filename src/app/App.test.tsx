@@ -13,7 +13,7 @@ beforeEach(() => {
 describe('App', () => {
   it('shows Elenco by default and switches tabs without unmounting the nav', async () => {
     render(<App />);
-    expect(screen.getByText('Elenco', { selector: 'div' })).toBeInTheDocument();
+    expect(screen.getByText('Nenhum jogador ainda')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Presença/ }));
     expect(screen.getByText('Presença', { selector: 'div' })).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Times/ }));

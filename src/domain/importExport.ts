@@ -24,7 +24,7 @@ export interface ExportPayload {
   players: Player[];
 }
 
-function genId(): string {
+export function genId(): string {
   return typeof crypto !== 'undefined' && 'randomUUID' in crypto ? crypto.randomUUID() : `p${Date.now()}${Math.random().toString(36).slice(2, 8)}`;
 }
 
