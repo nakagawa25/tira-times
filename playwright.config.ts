@@ -11,12 +11,12 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['iPhone 12'], viewport: { width: 390, height: 844 } },
+      use: { ...devices['Pixel 7'], viewport: { width: 390, height: 844 } },
     },
   ],
   webServer: {
     command: 'npm run preview',
-    url: 'http://localhost:4321',
+    url: 'http://localhost:4321/app/',
     reuseExistingServer: !process.env.CI,
   },
 });
