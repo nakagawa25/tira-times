@@ -17,7 +17,7 @@ describe('App', () => {
     await userEvent.click(screen.getByRole('button', { name: /Presença/ }));
     expect(screen.getByText('Quem veio?')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Times/ }));
-    expect(screen.getByText('Times', { selector: 'div' })).toBeInTheDocument();
+    expect(screen.getByText('Bora sortear?')).toBeInTheDocument();
     await userEvent.click(screen.getByRole('button', { name: /Regras/ }));
     expect(screen.getByText('Regras', { selector: 'div' })).toBeInTheDocument();
   });
