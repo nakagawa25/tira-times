@@ -21,8 +21,8 @@ describe('PlayerRow', () => {
   });
 
   it('hides the rating when not provided (notas ocultas)', () => {
-    render(<PlayerRow name="Dudu" />);
-    expect(screen.queryByText('3,0')).not.toBeInTheDocument();
+    const { container } = render(<PlayerRow name="Dudu" />);
+    expect(container.querySelector('.pl-player-rate')).not.toBeInTheDocument();
   });
 
   it('attendance mode reflects presence and calls onToggle on click', async () => {
