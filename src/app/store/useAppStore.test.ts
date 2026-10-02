@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { useAppStore } from './useAppStore';
 import type { Player } from '../../domain/types';
+import { DEFAULT_RULES } from '../../domain/types';
 
 const player = (id: string, monthly = false): Player => ({ id, name: `J${id}`, positions: ['QQ'], monthly, skills: { attack: 3, defense: 3, speed: 3, skill: 3 } });
 
@@ -48,6 +49,12 @@ describe('useAppStore', () => {
     const players = useAppStore.getState().players;
     expect(players.find((p) => p.id === '1')?.name).toBe('Atualizado');
     expect(players.find((p) => p.id === '2')).toBeTruthy();
+  });
+
+  it('falls back to default rules when localStorage holds corrupted JSON', async () => {
+    localStorage.setItem('tira-times', 'not valid json {{{');
+    await useAppStore.persist.rehydrate();
+    expect(useAppStore.getState().rules).toEqual(DEFAULT_RULES);
   });
 
   it('importData with mode "replace" clears presence and the last draw', () => {
