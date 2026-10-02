@@ -12,7 +12,7 @@ describe('describeGoalkeepers', () => {
 
   it('zero fixed goalkeepers: both goals rotate', () => {
     const draw = { teams: [], goalkeepers: [], rotating: 2, mode: 'fixed', bench: [], cost: 0 } as DrawResult;
-    expect(describeGoalkeepers(draw)).toBe('Revezamento nos dois gols');
+    expect(describeGoalkeepers(draw)).toBe('Sem goleiro · revezamento nos dois gols');
   });
 
   it('per-team mode', () => {
@@ -48,5 +48,18 @@ describe('buildShareText', () => {
     expect(text).toContain('TIME LARANJA (3,0)');
     expect(text).toContain('  + 1 de fora');
     expect(text).toContain('Próxima: Serginho, Paulo');
+  });
+
+  it('shows the real missing count, not a hardcoded 1', () => {
+    const draw: DrawResult = {
+      teams: [{ name: 'Time Verde', color: 'verde', players: [p('1', 'Dudu')], goalkeeper: null, missing: 3 }],
+      goalkeepers: [],
+      rotating: 0,
+      mode: 'fixed',
+      bench: [],
+      cost: 0,
+    };
+    const text = buildShareText('Pelada de Quinta', draw, new Date(2026, 9, 1, 19, 42));
+    expect(text).toContain('  + 3 de fora');
   });
 });
