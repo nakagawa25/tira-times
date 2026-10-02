@@ -3,8 +3,9 @@ import { test, expect } from '@playwright/test';
 test('the app works offline after the first visit', async ({ page, context }) => {
   await page.goto('/app/');
   await expect(page.getByText('Elenco').first()).toBeVisible();
-  // Let the service worker finish installing and precaching before going offline.
-  await page.waitForTimeout(1000);
+  // Wait deterministically for the service worker to finish installing and
+  // precaching before going offline, instead of a fixed timeout.
+  await page.evaluate(() => navigator.serviceWorker.ready);
 
   await context.setOffline(true);
   await page.reload();

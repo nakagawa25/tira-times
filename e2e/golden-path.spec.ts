@@ -24,4 +24,9 @@ test('cadastrar, marcar presença, sortear e importar/exportar', async ({ page }
   await expect(page.getByText(/"app": "tira-times"/)).toBeVisible();
   await page.getByRole('button', { name: 'Voltar' }).click();
   await expect(page.getByText('Elenco').first()).toBeVisible();
+
+  // Dados sobrevivem a fechar e reabrir: reload the page and confirm the
+  // roster (persisted in localStorage) is still there.
+  await page.reload();
+  await expect(page.getByText('4 jogadores · 0 mensalistas')).toBeVisible();
 });
