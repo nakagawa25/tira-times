@@ -14,6 +14,8 @@ export interface ElencoScreenProps {
 }
 
 export function ElencoScreen({ onHideNavChange, onOpenPro }: ElencoScreenProps) {
+  const groupName = useAppStore((s) => s.groupName);
+  const setGroupName = useAppStore((s) => s.setGroupName);
   const players = useAppStore((s) => s.players);
   const showRatings = useAppStore((s) => s.showRatings);
   const addPlayer = useAppStore((s) => s.addPlayer);
@@ -43,7 +45,7 @@ export function ElencoScreen({ onHideNavChange, onOpenPro }: ElencoScreenProps) 
   const editingPlayer = sheetFor !== 'closed' && sheetFor !== 'new' ? (players.find((p) => p.id === sheetFor) ?? null) : null;
 
   return (
-    <div>
+    <div className="pl-screen tt-listpad">
       <AppBar
         title="Elenco"
         subtitle={`${players.length} jogadores · ${monthlyCount} mensalistas`}
@@ -60,6 +62,7 @@ export function ElencoScreen({ onHideNavChange, onOpenPro }: ElencoScreenProps) 
           },
         ]}
       />
+      <TextField label="Nome do grupo" value={groupName} onChange={setGroupName} />
       <TextField icon="search" placeholder="Buscar jogador" value={query} onChange={setQuery} />
       {players.length === 0 ? (
         <div>
@@ -80,9 +83,11 @@ export function ElencoScreen({ onHideNavChange, onOpenPro }: ElencoScreenProps) 
           />
         ))
       )}
-      <Button variant="fab" icon="person_add" onClick={() => setSheetFor('new')}>
-        Novo jogador
-      </Button>
+      <div className="tt-fab">
+        <Button variant="fab" icon="person_add" onClick={() => setSheetFor('new')}>
+          Novo jogador
+        </Button>
+      </div>
       {sheetFor !== 'closed' && (
         <PlayerSheet
           player={editingPlayer}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { AppBar } from '../components/AppBar';
 import { Button } from '../components/Button';
@@ -16,10 +16,11 @@ export function TimesScreen({ onOpenPro, onGoToPresenca }: TimesScreenProps) {
   const draw = useAppStore((s) => s.draw);
   const pro = useAppStore((s) => s.web.pro);
   const runDraw = useAppStore((s) => s.runDraw);
+  const [copied, setCopied] = useState(false);
 
   if (!draw) {
     return (
-      <div>
+      <div className="pl-screen">
         <AppBar title="Times" large />
         <p>Bora sortear?</p>
         <Button onClick={onGoToPresenca}>Marcar presença</Button>
@@ -29,8 +30,19 @@ export function TimesScreen({ onOpenPro, onGoToPresenca }: TimesScreenProps) {
 
   const shareText = buildShareText(groupName, draw);
 
+  async function handleCopy() {
+    if (!navigator.clipboard) return;
+    try {
+      await navigator.clipboard.writeText(shareText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1500);
+    } catch {
+      // clipboard write failed silently; no destructive effect, nothing to recover
+    }
+  }
+
   return (
-    <div>
+    <div className="pl-screen tt-listpad">
       <AppBar title="Times" large />
       <p>Gol: {describeGoalkeepers(draw)}</p>
       {!pro && <AdSlot slot="times-banner" />}
@@ -46,8 +58,8 @@ export function TimesScreen({ onOpenPro, onGoToPresenca }: TimesScreenProps) {
         <Button variant="tonal" icon="shuffle" onClick={() => runDraw()}>
           Sortear de novo
         </Button>
-        <Button variant="outline" icon="content_copy" onClick={() => navigator.clipboard.writeText(shareText)}>
-          Copiar
+        <Button variant="outline" icon="content_copy" onClick={handleCopy}>
+          {copied ? 'Copiado!' : 'Copiar'}
         </Button>
         {typeof navigator !== 'undefined' && 'share' in navigator && (
           <Button variant="outline" icon="ios_share" onClick={() => navigator.share({ text: shareText })}>

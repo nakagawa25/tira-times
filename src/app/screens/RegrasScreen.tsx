@@ -3,7 +3,6 @@ import { useAppStore } from '../store/useAppStore';
 import { AppBar } from '../components/AppBar';
 import { Stepper } from '../components/Stepper';
 import { MonthlySwitch } from '../components/MonthlySwitch';
-import { Button } from '../components/Button';
 import { planSummary } from '../../domain/planSummary';
 import { describeGoalPlan, positionWarnings } from './regrasPreview';
 
@@ -18,7 +17,7 @@ export function RegrasScreen() {
   const warnings = positionWarnings(presentPlayers, rules);
 
   return (
-    <div>
+    <div className="pl-screen">
       <AppBar title="Regras" large />
       <div className="pl-card">
         <Stepper label="Jogadores de linha por time" value={rules.linePerTeam} min={2} max={11} onChange={(v) => setRules({ linePerTeam: v })} />
@@ -27,13 +26,23 @@ export function RegrasScreen() {
       </div>
       <div className="pl-card">
         <p>Goleiros</p>
-        <div role="radiogroup" aria-label="Goleiros">
-          <Button variant={rules.goalkeepers === 'fixed' ? 'primary' : 'outline'} onClick={() => setRules({ goalkeepers: 'fixed' })}>
+        <div className="tt-seg">
+          <button
+            type="button"
+            className={`tt-seg-btn${rules.goalkeepers === 'fixed' ? ' on' : ''}`}
+            aria-pressed={rules.goalkeepers === 'fixed'}
+            onClick={() => setRules({ goalkeepers: 'fixed' })}
+          >
             Fixos no gol
-          </Button>
-          <Button variant={rules.goalkeepers === 'perTeam' ? 'primary' : 'outline'} onClick={() => setRules({ goalkeepers: 'perTeam' })}>
+          </button>
+          <button
+            type="button"
+            className={`tt-seg-btn${rules.goalkeepers === 'perTeam' ? ' on' : ''}`}
+            aria-pressed={rules.goalkeepers === 'perTeam'}
+            onClick={() => setRules({ goalkeepers: 'perTeam' })}
+          >
             Um por time
-          </Button>
+          </button>
         </div>
       </div>
       <div className="pl-card">

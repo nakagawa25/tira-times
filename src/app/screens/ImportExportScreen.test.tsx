@@ -52,4 +52,20 @@ describe('ImportExportScreen', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Conhecer o Pro' }));
     expect(onOpenPro).toHaveBeenCalledOnce();
   });
+
+  it('imports a chosen .json file through the same flow as pasted text', async () => {
+    render(<ImportExportScreen onBack={() => {}} onOpenPro={() => {}} />);
+    const json = JSON.stringify({ players: [{ name: 'Do arquivo' }] });
+    const file = new File([json], 'test.json', { type: 'application/json' });
+    await userEvent.upload(screen.getByLabelText('Escolher arquivo .json'), file);
+    expect(screen.getByText('1 adicionados e 0 atualizados.')).toBeInTheDocument();
+    expect(useAppStore.getState().players.find((p) => p.name === 'Do arquivo')).toBeTruthy();
+  });
+
+  it('"Copiar JSON" flips its label to "Copiado!" after a successful copy', async () => {
+    render(<ImportExportScreen onBack={() => {}} onOpenPro={() => {}} />);
+    await userEvent.click(screen.getByRole('button', { name: 'Copiar JSON' }));
+    expect(navigator.clipboard.writeText).toHaveBeenCalledOnce();
+    expect(await screen.findByRole('button', { name: 'Copiado!' })).toBeInTheDocument();
+  });
 });

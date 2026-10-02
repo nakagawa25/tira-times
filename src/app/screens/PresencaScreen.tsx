@@ -29,36 +29,40 @@ export function PresencaScreen({ onDrawn }: PresencaScreenProps) {
   }
 
   return (
-    <div>
-      <AppBar title="Quem veio?" subtitle={formatDateLong(new Date())} large />
-      <p>
-        {presentPlayers.length} de {players.length} presentes · {presentGoalkeepers} goleiros
-      </p>
-      <div>
-        <Button variant="outline" onClick={setAllMonthlyPresent}>
-          Mensalistas
-        </Button>
-        <Button variant="outline" onClick={setAllPresent}>
-          Todos
-        </Button>
-        <Button variant="ghost" onClick={clearPresent}>
-          Limpar
+    <>
+      <div className="pl-screen">
+        <AppBar title="Quem veio?" subtitle={formatDateLong(new Date())} large />
+        <p>
+          {presentPlayers.length} de {players.length} presentes · {presentGoalkeepers} goleiros
+        </p>
+        <div>
+          <Button variant="outline" onClick={setAllMonthlyPresent}>
+            Mensalistas
+          </Button>
+          <Button variant="outline" onClick={setAllPresent}>
+            Todos
+          </Button>
+          <Button variant="ghost" onClick={clearPresent}>
+            Limpar
+          </Button>
+        </div>
+        {sorted.map((p) => (
+          <PlayerRow
+            key={p.id}
+            name={p.name}
+            positions={p.positions}
+            monthly={p.monthly}
+            mode="attendance"
+            present={present.includes(p.id)}
+            onToggle={() => togglePresent(p.id)}
+          />
+        ))}
+      </div>
+      <div className="pl-dock">
+        <Button variant="primary" size="lg" block disabled={presentPlayers.length < 4} onClick={handleDraw}>
+          {presentPlayers.length < 4 ? 'Marque pelo menos 4' : `Sortear ${presentPlayers.length} jogadores`}
         </Button>
       </div>
-      {sorted.map((p) => (
-        <PlayerRow
-          key={p.id}
-          name={p.name}
-          positions={p.positions}
-          monthly={p.monthly}
-          mode="attendance"
-          present={present.includes(p.id)}
-          onToggle={() => togglePresent(p.id)}
-        />
-      ))}
-      <Button variant="primary" size="lg" block disabled={presentPlayers.length < 4} onClick={handleDraw}>
-        {presentPlayers.length < 4 ? 'Marque pelo menos 4' : `Sortear ${presentPlayers.length} jogadores`}
-      </Button>
-    </div>
+    </>
   );
 }

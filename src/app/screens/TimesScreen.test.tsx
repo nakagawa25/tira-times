@@ -51,13 +51,14 @@ describe('TimesScreen', () => {
     expect(runDrawSpy).toHaveBeenCalledOnce();
   });
 
-  it('"Copiar" writes the share text to the clipboard', async () => {
+  it('"Copiar" writes the share text to the clipboard and flips its label', async () => {
     [1, 2, 3, 4].forEach((i) => useAppStore.getState().addPlayer(mk(String(i))));
     useAppStore.getState().setRules({ teams: 2, linePerTeam: 2 });
     useAppStore.getState().runDraw(1);
     render(<TimesScreen onOpenPro={() => {}} onGoToPresenca={() => {}} />);
     await userEvent.click(screen.getByRole('button', { name: 'Copiar' }));
     expect(navigator.clipboard.writeText).toHaveBeenCalledOnce();
+    expect(await screen.findByRole('button', { name: 'Copiado!' })).toBeInTheDocument();
   });
 
   it('shows "Enviar" only when the Web Share API is available', () => {

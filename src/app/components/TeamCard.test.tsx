@@ -40,6 +40,12 @@ describe('TeamCard', () => {
     expect(screen.getAllByText('Vaga aberta — completar com 1 de fora')).toHaveLength(1);
   });
 
+  it('shows "N/total" instead of "N jogadores" when the team is incomplete', () => {
+    render(<TeamCard name="Time Laranja" color="laranja" players={[mk('1', 'Dudu', ['DEF'])]} missing={1} />);
+    expect(screen.getByText('1/2')).toBeInTheDocument();
+    expect(screen.queryByText('1 jogadores')).not.toBeInTheDocument();
+  });
+
   it('shows no open-slot row when the team is complete', () => {
     render(<TeamCard name="Time Verde" color="verde" players={[mk('1', 'Dudu', ['DEF'])]} missing={0} />);
     expect(screen.queryByText('Vaga aberta — completar com 1 de fora')).not.toBeInTheDocument();

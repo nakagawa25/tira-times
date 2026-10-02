@@ -31,7 +31,7 @@ export function TeamCard({ name, color, players, goalkeeper, missing = 0, showPr
     <div className="pl-team">
       <div className={`pl-team-head pl-team-${color}`}>
         <span className="pl-team-name">{name}</span>
-        <span className="pl-team-meta">{players.length} jogadores</span>
+        <span className="pl-team-meta">{missing > 0 ? `${players.length}/${players.length + missing}` : `${players.length} jogadores`}</span>
         <span className="pl-team-power">
           <span className="pl-icon" aria-hidden="true">
             bolt
