@@ -29,7 +29,7 @@ body { overflow: hidden; }
 /* Ported 1:1 from reference/prototipo/tira-times.html — keep in sync with it. */
 
 /* Marca (barra superior do Elenco) */
-.tt-brandbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 8px 0 16px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); }
+.tt-brandbar { display: flex; align-items: center; justify-content: space-between; padding: 12px 0 0 2px; padding-top: calc(12px + env(safe-area-inset-top, 0px)); }
 .tt-brand { display: flex; align-items: center; gap: 10px; }
 .tt-brand-btn { background: none; border: 0; padding: 4px; margin: -4px; border-radius: var(--radius-md); cursor: pointer; text-align: left; }
 .tt-logo { position: relative; width: 34px; height: 34px; border-radius: 11px; background: var(--pitch-600); overflow: hidden; flex: none; }
@@ -37,7 +37,7 @@ body { overflow: hidden; }
 .tt-logo-b { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; border: 2px solid var(--pitch-100); box-sizing: border-box; background: var(--pitch-600); }
 .tt-brand-name { display: block; font-size: 17px; font-weight: 800; letter-spacing: -.3px; line-height: 20px; }
 .tt-brand-group { display: block; font-size: 12px; font-weight: 600; color: var(--ink-muted); }
-.tt-titlerow { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 16px 10px; flex-wrap: nowrap; }
+.tt-titlerow { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 0px 10px 2px; flex-wrap: nowrap; }
 .tt-titlecol { display: flex; flex-direction: column; min-width: 0; }
 .tt-h1 { margin: 0; font-size: 28px; line-height: 34px; font-weight: 800; letter-spacing: -.5px; }
 .tt-count { font-size: 12px; font-weight: 700; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
@@ -45,7 +45,7 @@ body { overflow: hidden; }
 .tt-eye .pl-icon { font-size: 20px; }
 .tt-eye.on { color: var(--pitch-700); border-color: var(--pitch-100); background: var(--pitch-100); }
 .tt-off { opacity: .55; }
-.tt-install { display: flex; align-items: center; gap: 12px; margin: 0 16px 10px; padding: 10px 6px 10px 12px; border-radius: var(--radius-md); background: var(--pitch-100); color: var(--pitch-700); }
+.tt-install { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; padding: 10px 6px 10px 12px; border-radius: var(--radius-md); background: var(--pitch-100); color: var(--pitch-700); }
 .tt-install-ic { width: 36px; height: 36px; border-radius: 10px; background: var(--surface-000); display: grid; place-items: center; flex: none; }
 .tt-install-t { flex: 1; min-width: 0; display: flex; flex-direction: column; font-size: 12px; font-weight: 600; line-height: 16px; }
 .tt-install-t b { font-size: 14px; color: var(--ink); }

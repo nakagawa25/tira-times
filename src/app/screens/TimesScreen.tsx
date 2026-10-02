@@ -87,11 +87,6 @@ export function TimesScreen({ onGoToPresenca }: TimesScreenProps) {
         <Button block icon="content_copy" onClick={handleCopy}>
           {copied ? 'Copiado!' : 'Copiar'}
         </Button>
-        {typeof navigator !== 'undefined' && 'share' in navigator && (
-          <Button variant="outline" icon="ios_share" onClick={() => navigator.share({ text: shareText })}>
-            Enviar
-          </Button>
-        )}
       </div>
     </div>
   );
