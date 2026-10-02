@@ -1,0 +1,27 @@
+/* App shell layout: fixed-width column on desktop, gutters, fixed bottom nav,
+   floating FAB, safe-area insets. Mirrors reference/prototipo/tira-times.html
+   (search for ".tt-app" there) — componentes.css already has the screen-level
+   primitives (.pl-screen, .pl-dock, .pl-nav, etc.), this file wires the shell
+   around them. */
+
+html, body { height: 100%; }
+body { overflow: hidden; }
+
+.tt-app { position: relative; width: 100%; height: 100%; max-width: 420px; background: var(--surface-100); display: flex; flex-direction: column; overflow: hidden; margin: 0 auto; }
+@media (min-width: 560px) {
+  body { background: var(--surface-200); }
+  .tt-app { border-left: 1px solid var(--line); border-right: 1px solid var(--line); box-shadow: 0 0 40px rgba(21, 35, 26, 0.08); }
+}
+.tt-main { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+
+.pl-nav { padding-bottom: calc(14px + env(safe-area-inset-bottom, 0px)); }
+.pl-appbar { padding-top: calc(8px + env(safe-area-inset-top, 0px)); }
+:focus-visible { outline: 3px solid var(--pitch-600); outline-offset: 2px; }
+
+.tt-pad { padding: 0 16px 8px; }
+.tt-listpad { padding-bottom: 96px; }
+.tt-fab { position: absolute; right: 16px; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); z-index: 5; }
+
+.tt-seg { display: flex; background: var(--surface-200); border-radius: var(--radius-pill); padding: 4px; gap: 4px; }
+.tt-seg-btn { flex: 1; height: 40px; border: 0; border-radius: var(--radius-pill); cursor: pointer; font-weight: 700; font-size: 14px; background: transparent; color: var(--ink-muted); }
+.tt-seg-btn.on { background: var(--surface-000); color: var(--pitch-700); box-shadow: var(--shadow-1); }

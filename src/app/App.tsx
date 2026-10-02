@@ -17,11 +17,13 @@ export default function App() {
   const setPro = useAppStore((s) => s.setPro);
 
   return (
-    <div className="pl-app">
-      {tab === 'elenco' && <ElencoScreen onHideNavChange={setHideNav} onOpenPro={() => setProOpen(true)} />}
-      {tab === 'presenca' && <PresencaScreen onDrawn={() => setTab('times')} />}
-      {tab === 'times' && <TimesScreen onOpenPro={() => setProOpen(true)} onGoToPresenca={() => setTab('presenca')} />}
-      {tab === 'regras' && <RegrasScreen />}
+    <div className="tt-app">
+      <div className="tt-main">
+        {tab === 'elenco' && <ElencoScreen onHideNavChange={setHideNav} onOpenPro={() => setProOpen(true)} />}
+        {tab === 'presenca' && <PresencaScreen onDrawn={() => setTab('times')} />}
+        {tab === 'times' && <TimesScreen onOpenPro={() => setProOpen(true)} onGoToPresenca={() => setTab('presenca')} />}
+        {tab === 'regras' && <RegrasScreen />}
+      </div>
       {!hideNav && (
         <BottomNav
           active={tab}
