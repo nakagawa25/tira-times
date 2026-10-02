@@ -23,21 +23,13 @@ describe('TimesScreen', () => {
     expect(onGoToPresenca).toHaveBeenCalledOnce();
   });
 
-  it('shows a TeamCard per team and the ad placeholder on the free plan', () => {
+  it('shows a TeamCard per team, with no ads or Pro upsell shown', () => {
     [1, 2, 3, 4].forEach((i) => useAppStore.getState().addPlayer(mk(String(i))));
     useAppStore.getState().setRules({ teams: 2, linePerTeam: 2 });
     useAppStore.getState().runDraw(1);
-    render(<TimesScreen onOpenPro={() => {}} onGoToPresenca={() => {}} />);
-    expect(screen.getByText('Anúncio')).toBeInTheDocument();
-  });
-
-  it('hides the ad for Pro users', () => {
-    [1, 2, 3, 4].forEach((i) => useAppStore.getState().addPlayer(mk(String(i))));
-    useAppStore.getState().setRules({ teams: 2, linePerTeam: 2 });
-    useAppStore.getState().runDraw(1);
-    useAppStore.getState().setPro(true);
     render(<TimesScreen onOpenPro={() => {}} onGoToPresenca={() => {}} />);
     expect(screen.queryByText('Anúncio')).not.toBeInTheDocument();
+    expect(screen.queryByText('Remover anúncios')).not.toBeInTheDocument();
   });
 
   it('"Sortear de novo" calls runDraw again', async () => {

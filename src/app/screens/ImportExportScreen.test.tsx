@@ -18,7 +18,7 @@ describe('ImportExportScreen', () => {
   it('shows the group name, player count and a valid export preview', () => {
     useAppStore.getState().addPlayer({ id: '1', name: 'Dudu', positions: ['QQ'], monthly: false, skills: { attack: 3, defense: 3, speed: 3, skill: 3 } });
     render(<ImportExportScreen onBack={() => {}} onOpenPro={() => {}} />);
-    expect(screen.getByText('1 jogadores')).toBeInTheDocument();
+    expect(screen.getByText('1 jogadores + regras')).toBeInTheDocument();
     expect(screen.getByText(/"app": "tira-times"/)).toBeInTheDocument();
   });
 
@@ -32,7 +32,7 @@ describe('ImportExportScreen', () => {
   it('shows the exact FORMATO_JSON.md error for invalid JSON', async () => {
     render(<ImportExportScreen onBack={() => {}} onOpenPro={() => {}} />);
     await userEvent.type(screen.getByLabelText('Colar JSON'), esc('{ not json'));
-    await userEvent.click(screen.getByRole('button', { name: 'Importar' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Importar texto colado' }));
     expect(screen.getByText('Esse texto não é um JSON válido. Copie o arquivo inteiro, do primeiro { ao último }.')).toBeInTheDocument();
   });
 
@@ -41,16 +41,9 @@ describe('ImportExportScreen', () => {
     render(<ImportExportScreen onBack={() => {}} onOpenPro={() => {}} />);
     const json = JSON.stringify({ players: [{ id: 'p01', name: 'Marcão Atualizado' }, { name: 'Novo' }] });
     await userEvent.type(screen.getByLabelText('Colar JSON'), esc(json));
-    await userEvent.click(screen.getByRole('button', { name: 'Importar' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Importar texto colado' }));
     expect(screen.getByText('1 adicionados e 1 atualizados.')).toBeInTheDocument();
     expect(useAppStore.getState().players.find((p) => p.id === 'p01')?.name).toBe('Marcão Atualizado');
-  });
-
-  it('calls onOpenPro from "Conhecer o Pro"', async () => {
-    const onOpenPro = vi.fn();
-    render(<ImportExportScreen onBack={() => {}} onOpenPro={onOpenPro} />);
-    await userEvent.click(screen.getByRole('button', { name: 'Conhecer o Pro' }));
-    expect(onOpenPro).toHaveBeenCalledOnce();
   });
 
   it('imports a chosen .json file through the same flow as pasted text', async () => {

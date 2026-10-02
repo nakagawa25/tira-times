@@ -20,6 +20,7 @@ export interface AppState {
   present: string[];
   rules: Rules;
   draw: DrawResult | null;
+  drawnAt: number | null;
   showRatings: boolean;
   web: WebState;
 
@@ -43,11 +44,12 @@ export interface AppState {
 export const useAppStore = create<AppState>()(
   persist(
     (set, get) => ({
-      groupName: 'Minha pelada',
+      groupName: 'Fut de Sexta. Created By Naka',
       players: [],
       present: [],
       rules: DEFAULT_RULES,
       draw: null,
+      drawnAt: null,
       showRatings: true,
       web: { consent: null, pro: false, installDismissed: false },
 
@@ -64,7 +66,7 @@ export const useAppStore = create<AppState>()(
       runDraw: (seed) => {
         const { players, present, rules } = get();
         const presentPlayers = players.filter((p) => present.includes(p.id));
-        set({ draw: drawTeams(presentPlayers, rules, seed) });
+        set({ draw: drawTeams(presentPlayers, rules, seed), drawnAt: Date.now() });
       },
       setShowRatings: (value) => set({ showRatings: value }),
       importData: (result, mode) =>

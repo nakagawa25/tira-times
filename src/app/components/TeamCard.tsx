@@ -20,7 +20,7 @@ const METERS: { key: 'attack' | 'defense' | 'speed' | 'skill'; label: string }[]
 ];
 
 function playerTag(p: Player): string {
-  return p.positions.find((pos) => pos !== 'QQ') ?? 'QQ';
+  return p.positions.join(' · ');
 }
 
 export function TeamCard({ name, color, players, goalkeeper, missing = 0, showProfile = true }: TeamCardProps) {
@@ -33,8 +33,8 @@ export function TeamCard({ name, color, players, goalkeeper, missing = 0, showPr
         <span className="pl-team-name">{name}</span>
         <span className="pl-team-meta">{missing > 0 ? `${players.length}/${players.length + missing}` : `${players.length} jogadores`}</span>
         <span className="pl-team-power">
-          <span className="pl-icon" aria-hidden="true">
-            bolt
+          <span className="pl-icon pl-icon-fill" aria-hidden="true">
+            star
           </span>
           {formatRating(power)}
         </span>
@@ -50,8 +50,8 @@ export function TeamCard({ name, color, players, goalkeeper, missing = 0, showPr
                 </div>
                 <div className="pl-meter-track">
                   <span
-                    className="pl-meter-fill"
-                    style={{ width: `${(profile.skills[m.key] / 5) * 100}%`, background: 'var(--pitch-600)' }}
+                    className={`pl-meter-fill pl-team-${color}`}
+                    style={{ width: `${Math.max(4, (profile.skills[m.key] / 5) * 100)}%` }}
                   />
                 </div>
               </div>

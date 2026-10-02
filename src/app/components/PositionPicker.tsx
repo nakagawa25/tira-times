@@ -39,6 +39,11 @@ export function PositionPicker({ value, defaultValue = ['QQ'], onChange }: Posit
         const on = current.includes(opt.id);
         return (
           <button key={opt.id} type="button" className={`pl-chip${on ? ' pl-chip-on' : ''}`} aria-pressed={on} onClick={() => toggle(opt.id)}>
+            {on && (
+              <span className="pl-icon" aria-hidden="true">
+                check
+              </span>
+            )}
             {opt.label}
           </button>
         );

@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { useAppStore } from '../store/useAppStore';
 import { AppBar } from '../components/AppBar';
-import { TextField } from '../components/TextField';
 import { Button } from '../components/Button';
 import { parseImport, buildExport, exportFilename } from '../../domain/importExport';
 import { sampleSquad } from '../../domain/sampleSquad';
@@ -11,11 +10,10 @@ export interface ImportExportScreenProps {
   onOpenPro: () => void;
 }
 
-export function ImportExportScreen({ onBack, onOpenPro }: ImportExportScreenProps) {
+export function ImportExportScreen({ onBack }: ImportExportScreenProps) {
   const groupName = useAppStore((s) => s.groupName);
   const players = useAppStore((s) => s.players);
   const rules = useAppStore((s) => s.rules);
-  const pro = useAppStore((s) => s.web.pro);
   const importData = useAppStore((s) => s.importData);
 
   const [importText, setImportText] = useState('');
@@ -86,65 +84,101 @@ export function ImportExportScreen({ onBack, onOpenPro }: ImportExportScreenProp
 
   return (
     <div className="pl-screen">
-      <AppBar title="Importar / Exportar" onBack={onBack} />
-      <div className="pl-card">
-        <p>{groupName}</p>
-        <p>{players.length} jogadores</p>
-        <pre>{exportJson}</pre>
-        <Button variant="tonal" onClick={handleCopyJson}>
+      <AppBar title="Importar / Exportar" subtitle="Leve o elenco para outro celular" onBack={onBack} />
+      <div className="pl-section-title tt-mt4">Exportar</div>
+      <div className="pl-card tt-cardpad">
+        <div className="tt-exp-head">
+          <span className="pl-toggle-icon tt-green-icon">
+            <span className="pl-icon" aria-hidden="true">
+              download
+            </span>
+          </span>
+          <span>
+            <div className="tt-exp-name">{groupName}</div>
+            <div className="tt-muted-sm">{players.length} jogadores + regras</div>
+          </span>
+        </div>
+        <pre className="tt-code" tabIndex={0}>
+          {exportJson}
+        </pre>
+        <Button block icon="content_copy" onClick={handleCopyJson}>
           {copied ? 'Copiado!' : 'Copiar JSON'}
         </Button>
-        <Button variant="outline" onClick={handleDownload}>
+        <Button variant="outline" block onClick={handleDownload}>
           Baixar .json
         </Button>
+        <div className="tt-hint">Cole no Tira times do outro celular, em Importar.</div>
       </div>
-      <div className="pl-card">
-        <Button variant="outline" icon="upload_file" onClick={() => fileInputRef.current?.click()}>
-          Escolher arquivo .json
-        </Button>
+
+      <div className="pl-section-title">Importar</div>
+      <div className="pl-card tt-cardpad">
         <input
           ref={fileInputRef}
           type="file"
           accept="application/json"
           onChange={handleFileChange}
-          style={{ display: 'none' }}
+          hidden
           aria-label="Escolher arquivo .json"
         />
-        <TextField label="Colar JSON" value={importText} onChange={setImportText} hint={error ?? undefined} />
-        <div className="tt-seg">
-          <button
-            type="button"
-            className={`tt-seg-btn${mode === 'merge' ? ' on' : ''}`}
-            aria-pressed={mode === 'merge'}
-            onClick={() => setMode('merge')}
-          >
-            Mesclar com o elenco
+        <button type="button" className="tt-drop" onClick={() => fileInputRef.current?.click()}>
+          <span className="pl-icon" style={{ fontSize: 30 }} aria-hidden="true">
+            upload_file
+          </span>
+          <span className="tt-drop-t">Escolher arquivo .json</span>
+          <span className="tt-muted-sm">ou cole o texto abaixo</span>
+        </button>
+        <textarea
+          className="tt-paste"
+          rows={3}
+          placeholder='{ "app": "tira-times", "players": [ ... ] }'
+          aria-label="Colar JSON"
+          value={importText}
+          onChange={(e) => {
+            setImportText(e.target.value);
+            setError(null);
+          }}
+        />
+        <div role="radiogroup">
+          <button type="button" role="radio" aria-checked={mode === 'merge'} className="tt-radio" onClick={() => setMode('merge')}>
+            <span className={`tt-radio-dot${mode === 'merge' ? ' on' : ''}`} />
+            <span className="tt-radio-text">
+              <span className="tt-radio-t">Mesclar com o elenco</span>
+              <span className="tt-radio-d">Atualiza quem já existe e adiciona os novos</span>
+            </span>
           </button>
-          <button
-            type="button"
-            className={`tt-seg-btn${mode === 'replace' ? ' on' : ''}`}
-            aria-pressed={mode === 'replace'}
-            onClick={() => setMode('replace')}
-          >
-            Substituir tudo
+          <hr className="pl-divider" />
+          <button type="button" role="radio" aria-checked={mode === 'replace'} className="tt-radio" onClick={() => setMode('replace')}>
+            <span className={`tt-radio-dot${mode === 'replace' ? ' on' : ''}`} />
+            <span className="tt-radio-text">
+              <span className="tt-radio-t">Substituir tudo</span>
+              <span className="tt-radio-d">Troca o elenco deste celular pelo do arquivo</span>
+            </span>
           </button>
         </div>
-        <Button variant="primary" onClick={handleImport}>
-          Importar
+        {(error || result) && (
+          <div className={`tt-msg${error ? ' bad' : ''}`}>
+            <span className="pl-icon pl-icon-fill" style={{ fontSize: 18 }} aria-hidden="true">
+              {error ? 'error' : 'check_circle'}
+            </span>
+            {error ?? result}
+          </div>
+        )}
+        <Button variant="tonal" block icon="upload" disabled={!importText.trim()} onClick={handleImport}>
+          Importar texto colado
         </Button>
-        {result && <p>{result}</p>}
       </div>
+
       {import.meta.env.DEV && (
-        <Button variant="ghost" onClick={() => importData({ ok: true, players: sampleSquad, rules: {} }, 'replace')}>
-          Restaurar exemplo
-        </Button>
+        <>
+          <div className="pl-section-title">Demo</div>
+          <div className="pl-card tt-cardpad">
+            <div className="tt-muted-sm">Volta ao elenco de exemplo com 22 jogadores e as regras padrão.</div>
+            <Button variant="outline" block icon="restart_alt" onClick={() => importData({ ok: true, players: sampleSquad, rules: {} }, 'replace')}>
+              Restaurar exemplo
+            </Button>
+          </div>
+        </>
       )}
-      <div className="pl-card">
-        <p>Plano: {pro ? 'Pro' : 'Grátis'}</p>
-        <Button variant="tonal" onClick={onOpenPro}>
-          Conhecer o Pro
-        </Button>
-      </div>
     </div>
   );
 }

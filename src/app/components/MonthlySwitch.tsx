@@ -41,7 +41,7 @@ export function MonthlySwitch({
       onClick={toggle}
     >
       <span className="pl-toggle-icon">
-        <span className="pl-icon" aria-hidden="true">
+        <span className={`pl-icon${on ? ' pl-icon-fill' : ''}`} aria-hidden="true">
           {icon}
         </span>
       </span>

@@ -3,7 +3,8 @@ import { useAppStore } from '../store/useAppStore';
 import { AppBar } from '../components/AppBar';
 import { Button } from '../components/Button';
 import { TeamCard } from '../components/TeamCard';
-import { AdSlot } from '../components/AdSlot';
+import { Empty } from '../components/Empty';
+import { formatTime } from '../dateFormat';
 import { describeGoalkeepers, buildShareText } from './shareText';
 
 export interface TimesScreenProps {
@@ -11,24 +12,14 @@ export interface TimesScreenProps {
   onGoToPresenca: () => void;
 }
 
-export function TimesScreen({ onOpenPro, onGoToPresenca }: TimesScreenProps) {
+export function TimesScreen({ onGoToPresenca }: TimesScreenProps) {
   const groupName = useAppStore((s) => s.groupName);
   const draw = useAppStore((s) => s.draw);
-  const pro = useAppStore((s) => s.web.pro);
+  const drawnAt = useAppStore((s) => s.drawnAt);
   const runDraw = useAppStore((s) => s.runDraw);
   const [copied, setCopied] = useState(false);
 
-  if (!draw) {
-    return (
-      <div className="pl-screen">
-        <AppBar title="Times" large />
-        <p>Bora sortear?</p>
-        <Button onClick={onGoToPresenca}>Marcar presença</Button>
-      </div>
-    );
-  }
-
-  const shareText = buildShareText(groupName, draw);
+  const shareText = draw ? buildShareText(groupName, draw) : '';
 
   async function handleCopy() {
     if (!navigator.clipboard) return;
@@ -41,24 +32,59 @@ export function TimesScreen({ onOpenPro, onGoToPresenca }: TimesScreenProps) {
     }
   }
 
+  if (!draw) {
+    return (
+      <div className="pl-screen">
+        <AppBar title="Times" subtitle="Nenhum sorteio ainda" large />
+        <Empty
+          icon="shuffle"
+          title="Bora sortear?"
+          text="Marque quem veio na aba Presença e toque em Sortear."
+          action={
+            <Button icon="how_to_reg" onClick={onGoToPresenca}>
+              Marcar presença
+            </Button>
+          }
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="pl-screen tt-listpad">
-      <AppBar title="Times" large />
-      <p>Gol: {describeGoalkeepers(draw)}</p>
-      {!pro && <AdSlot slot="times-banner" />}
-      {draw.teams.map((team) => (
-        <TeamCard key={team.color} name={team.name} color={team.color} players={team.players} goalkeeper={team.goalkeeper} missing={team.missing} />
-      ))}
-      {draw.bench.length > 0 && (
-        <p>
-          Próxima · {draw.bench.length}: {draw.bench.map((p) => p.name).join(', ')}
-        </p>
-      )}
-      <div>
-        <Button variant="tonal" icon="shuffle" onClick={() => runDraw()}>
+      <AppBar
+        title="Times"
+        subtitle={`${drawnAt ? `Sorteado às ${formatTime(new Date(drawnAt))} · ` : ''}${draw.goalkeepers.length + draw.teams.reduce((n, t) => n + t.players.length, 0) + draw.bench.length} jogadores`}
+        large
+        actions={[{ icon: 'content_copy', label: 'Copiar times', onClick: handleCopy }]}
+      />
+      <div className="tt-stack">
+        <div className="tt-gk">
+          <span className="pl-icon pl-icon-fill" aria-hidden="true">
+            sports_handball
+          </span>
+          {describeGoalkeepers(draw)}
+        </div>
+        {draw.teams.map((team) => (
+          <TeamCard key={team.color} name={team.name} color={team.color} players={team.players} goalkeeper={team.goalkeeper} missing={team.missing} />
+        ))}
+        {draw.bench.length > 0 && (
+          <div className="tt-bench">
+            <div className="tt-bench-title">
+              <span className="pl-icon" aria-hidden="true">
+                hourglass_top
+              </span>
+              Próxima · {draw.bench.length}
+            </div>
+            <div className="tt-bench-names">{draw.bench.map((p) => p.name).join(', ')}</div>
+          </div>
+        )}
+      </div>
+      <div className="pl-dock tt-row">
+        <Button variant="tonal" block icon="refresh" onClick={() => runDraw()}>
           Sortear de novo
         </Button>
-        <Button variant="outline" icon="content_copy" onClick={handleCopy}>
+        <Button block icon="content_copy" onClick={handleCopy}>
           {copied ? 'Copiado!' : 'Copiar'}
         </Button>
         {typeof navigator !== 'undefined' && 'share' in navigator && (
@@ -67,11 +93,6 @@ export function TimesScreen({ onOpenPro, onGoToPresenca }: TimesScreenProps) {
           </Button>
         )}
       </div>
-      {!pro && (
-        <Button variant="ghost" onClick={onOpenPro}>
-          Remover anúncios
-        </Button>
-      )}
     </div>
   );
 }
