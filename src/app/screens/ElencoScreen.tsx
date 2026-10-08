@@ -58,19 +58,16 @@ export function ElencoScreen({ onHideNavChange, onOpenPro }: ElencoScreenProps) 
             <span className="tt-brand-group">{groupName}</span>
           </span>
         </span>
-        <button
-          type="button"
-          className="pl-iconbtn"
-          aria-label="Importar/Exportar"
+        <Button
+          variant="ghost"
+          icon="swap_vert"
           onClick={() => {
             setShowImportExport(true);
             onHideNavChange(true);
           }}
         >
-          <span className="pl-icon" aria-hidden="true">
-            swap_vert
-          </span>
-        </button>
+          Importar
+        </Button>
       </header>
       <div className="tt-titlerow">
         <div className="tt-titlecol">
@@ -109,7 +106,20 @@ export function ElencoScreen({ onHideNavChange, onOpenPro }: ElencoScreenProps) 
         <Empty
           icon="group_add"
           title="Nenhum jogador ainda"
-          text="Cadastre a galera. Só o nome é obrigatório."
+          text={
+            <>
+              Toque em{' '}
+              <span className="tt-empty-arrow" aria-hidden="true">
+                <span className="pl-icon" style={{ fontSize: 16 }}>
+                  north_east
+                </span>
+                <span className="pl-icon" style={{ fontSize: 16 }}>
+                  swap_vert
+                </span>
+              </span>{' '}
+              no topo para importar uma lista existente, ou cadastre a galera manualmente. Só o nome é obrigatório.
+            </>
+          }
           action={
             <Button icon="person_add" onClick={() => setSheetFor('new')}>
               Cadastrar primeiro

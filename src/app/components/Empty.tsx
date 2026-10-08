@@ -3,7 +3,7 @@ import React, { type ReactNode } from 'react';
 export interface EmptyProps {
   icon: string;
   title: string;
-  text: string;
+  text: ReactNode;
   action?: ReactNode;
 }
 

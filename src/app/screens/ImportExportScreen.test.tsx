@@ -61,4 +61,14 @@ describe('ImportExportScreen', () => {
     expect(navigator.clipboard.writeText).toHaveBeenCalledOnce();
     expect(await screen.findByRole('button', { name: 'Copiado!' })).toBeInTheDocument();
   });
+
+  it('clearing the squad requires confirmation and then removes every player', async () => {
+    useAppStore.getState().addPlayer({ id: '1', name: 'Dudu', positions: ['QQ'], monthly: false, skills: { attack: 3, defense: 3, speed: 3, skill: 3 } });
+    render(<ImportExportScreen onBack={() => {}} onOpenPro={() => {}} />);
+    await userEvent.click(screen.getByRole('button', { name: 'Excluir elenco inteiro' }));
+    expect(screen.getByText('Excluir todo o elenco (1 jogadores)? Essa ação não pode ser desfeita.')).toBeInTheDocument();
+    expect(useAppStore.getState().players).toHaveLength(1);
+    await userEvent.click(screen.getByRole('button', { name: 'Excluir' }));
+    expect(useAppStore.getState().players).toHaveLength(0);
+  });
 });

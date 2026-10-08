@@ -60,6 +60,18 @@ describe('useAppStore', () => {
     expect(allIds).toEqual(['1']);
   });
 
+  it('clearPlayers wipes players, presence and the draw', () => {
+    useAppStore.getState().addPlayer(player('1'));
+    useAppStore.getState().addPlayer(player('2'));
+    useAppStore.getState().setRules({ teams: 2, linePerTeam: 1 });
+    useAppStore.getState().runDraw(1);
+    useAppStore.getState().clearPlayers();
+    const state = useAppStore.getState();
+    expect(state.players).toEqual([]);
+    expect(state.present).toEqual([]);
+    expect(state.draw).toBeNull();
+  });
+
   it('importData with mode "merge" updates existing players by id and appends new ones', () => {
     useAppStore.getState().addPlayer(player('1'));
     useAppStore.getState().importData({ ok: true, players: [{ ...player('1'), name: 'Atualizado' }, player('2')], rules: {} }, 'merge');

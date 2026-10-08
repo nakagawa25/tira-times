@@ -1,3 +1,7 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # Tira times — instruções para o Claude Code
 
 Site **web mobile first** para organizar pelada: cadastrar o elenco, marcar presença, definir regras e **sortear times equilibrados**. Tem duas partes:
@@ -39,14 +43,25 @@ Idioma: **português do Brasil**. Este repositório começa só com especificaç
 ```
 src/
   domain/          # tipos, rating, planSummary, drawTeams, teamProfile, import/export — puro e testado
-  app/             # React: store/, components/ (os 11 do design system), screens/, App.tsx
-  components/      # componentes Astro do site (Header, Footer, AdSlot, ConsentBanner, ArticleCard)
-  content/guias/   # artigos .md (ver docs/SITE_E_CONTEUDO.md)
-  layouts/         # SiteLayout (com AdSense e consentimento), AppLayout (sem anúncio âncora)
-  pages/           # index, guias/[slug], regras, faq, sobre, contato, privacidade, termos, app/
-  styles/          # tokens.css, componentes.css
-public/            # ads.txt, robots.txt, ícones do PWA
+  app/
+    store/         # useAppStore (Zustand+persist), safeStorage (localStorage com try/catch), mergeState (merge de rules com defaults no load)
+    components/    # os componentes do design system (AppBar, Badge, BottomNav, Button, MonthlySwitch, PlayerRow, PositionPicker, StarRating, Stepper, TeamCard, TextField, AdSlot, Empty)
+    screens/       # ElencoScreen, PresencaScreen, TimesScreen, RegrasScreen, PlayerSheet, ProSheet, ImportExportScreen
+    App.tsx        # shell com BottomNav + 4 abas (elenco/presenca/times/regras) + ProSheet
+  layouts/         # AppLayout.astro (sem anúncio âncora)
+  pages/app/       # index.astro — monta <App client:only="react">
+  styles/          # tokens.css, componentes.css, app.css, ads.css, sheet.css
+public/            # robots.txt, icon.svg
 ```
+
+**Estado atual:** só o app (`/app/`) está implementado — é a primeira entrega (ver `docs/DECISOES_SESSAO.md`, item 3). O site de conteúdo (`components/` Astro, `content/guias/`, `layouts/SiteLayout`, páginas `index`/`guias`/`regras`/`faq`/legais, `ConsentBanner`, AdSense real) ainda **não existe** — é trabalho futuro, fora do escopo desta entrega. Não assuma que esses arquivos existem; confira antes de referenciá-los.
+
+### Detalhes que exigem ler o código (não só os docs)
+
+- **Regras de sorteio são mutuamente exclusivas em runtime**, não só na UI: em `useAppStore.setRules` (`src/app/store/useAppStore.ts`), ativar `avoidRepeatPairs` desliga `balance`/`traits`/`positions` e vice-versa — os termos de custo do algoritmo competem pelos mesmos swaps e misturá-los deixava os times visivelmente desequilibrados (comentário `ponytail:` no código).
+- **Histórico de pares (`pairHistory`) é efêmero**: fica fora do `partialize` do `persist`, não é salvo no `localStorage`. Reseta quando o roster/config muda (`historyKey`) ou após `presentPlayers.length` sorteios (cap ingênuo, ver comentário `ponytail:`).
+- **PWA scope vs. base**: no `astro.config.mjs`, a opção `scope` do `@vite-pwa/astro` controla o service worker (`/app/`); a opção `base` do Astro (site inteiro) fica em `/`. São coisas diferentes — não confundir ao mudar o deploy path.
+- **Build precisa de flag no Node 18**: `npm run build` roda `node --experimental-global-webcrypto node_modules/astro/astro.js build` (não é só `astro build`) por causa do webcrypto global exigido pelo Astro nessa versão de Node.
 
 ## Regras do projeto
 
@@ -60,7 +75,21 @@ public/            # ads.txt, robots.txt, ícones do PWA
 - **Acessibilidade:** HTML semântico, `aria-pressed`/`role="switch"`/`role="checkbox"` nos controles, foco visível, contraste dos tokens.
 - **Performance:** Lighthouse mobile ≥ 90 em performance, acessibilidade, boas práticas e SEO nas páginas do site (com anúncios desligados). Carregue o script do AdSense só depois do consentimento e com `async`.
 - **Persistência à prova de falha:** `try/catch` em todo acesso a `localStorage`; ao carregar, mescle `rules` com os padrões.
-- Comandos: `npm run dev`, `npm run build`, `npm test`, `npx playwright test`, `npx astro check`. Rode testes, `astro check` e build antes de dizer que algo está pronto.
+- Rode testes, `astro check` e build antes de dizer que algo está pronto.
+
+## Comandos
+
+- `npm run dev` — Astro dev server.
+- `npm run build` — build de produção (ver nota sobre a flag `--experimental-global-webcrypto` acima).
+- `npm run preview` — serve o build.
+- `npm run check` — `astro check` (tipos nos `.astro`).
+- `npm test` — Vitest (domínio + componentes), roda uma vez. `npm run test:watch` para modo watch.
+  - Um arquivo só: `npx vitest run src/domain/drawTeams.test.ts`.
+  - Um teste só: `npx vitest run src/domain/drawTeams.test.ts -t "nome do teste"`.
+- `npm run lint` — ESLint em `.js/.ts/.tsx`.
+- `npm run e2e` — Playwright (`e2e/*.spec.ts`, viewport 390×844).
+  - Um arquivo só: `npx playwright test e2e/golden-path.spec.ts`.
+- `node --test reference/sorteio/sorteio.test.mjs` — testes do protótipo original do algoritmo (referência, não o código em `src/domain/`).
 
 ## Glossário
 

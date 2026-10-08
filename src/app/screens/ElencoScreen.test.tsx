@@ -50,7 +50,7 @@ describe('ElencoScreen', () => {
   it('opens Importar/Exportar and hides the bottom nav', async () => {
     let hidden = false;
     render(<ElencoScreen onHideNavChange={(h) => (hidden = h)} onOpenPro={noop} />);
-    await userEvent.click(screen.getByRole('button', { name: 'Importar/Exportar' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Importar' }));
     expect(screen.getByText('Importar / Exportar')).toBeInTheDocument();
     expect(hidden).toBe(true);
   });

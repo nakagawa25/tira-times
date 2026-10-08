@@ -33,6 +33,7 @@ export interface AppState {
   addPlayer: (player: Player) => void;
   updatePlayer: (player: Player) => void;
   removePlayer: (id: string) => void;
+  clearPlayers: () => void;
   togglePresent: (id: string) => void;
   setAllMonthlyPresent: () => void;
   setAllPresent: () => void;
@@ -65,6 +66,8 @@ export const useAppStore = create<AppState>()(
       addPlayer: (player) => set((s) => ({ players: [...s.players, player], present: [...s.present, player.id] })),
       updatePlayer: (player) => set((s) => ({ players: s.players.map((p) => (p.id === player.id ? player : p)) })),
       removePlayer: (id) => set((s) => ({ players: s.players.filter((p) => p.id !== id), present: s.present.filter((pid) => pid !== id) })),
+      clearPlayers: () =>
+        set({ players: [], present: [], draw: null, drawnAt: null, pairHistory: {}, historyDraws: 0, historyKey: '' }),
       togglePresent: (id) =>
         set((s) => ({ present: s.present.includes(id) ? s.present.filter((pid) => pid !== id) : [...s.present, id] })),
       setAllMonthlyPresent: () => set((s) => ({ present: s.players.filter((p) => p.monthly).map((p) => p.id) })),

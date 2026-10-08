@@ -126,3 +126,4 @@ body { overflow: hidden; }
 .tt-empty-icon { width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center; background: var(--pitch-100); color: var(--pitch-700); margin-bottom: 6px; }
 .tt-empty-title { font-size: 18px; font-weight: 800; }
 .tt-empty-text { font-size: 14px; font-weight: 500; color: var(--ink-muted); max-width: 260px; margin-bottom: 10px; }
+.tt-empty-arrow { display: inline-flex; align-items: center; gap: 2px; color: var(--pitch-700); vertical-align: middle; }

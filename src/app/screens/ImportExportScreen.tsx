@@ -15,12 +15,14 @@ export function ImportExportScreen({ onBack }: ImportExportScreenProps) {
   const players = useAppStore((s) => s.players);
   const rules = useAppStore((s) => s.rules);
   const importData = useAppStore((s) => s.importData);
+  const clearPlayers = useAppStore((s) => s.clearPlayers);
 
   const [importText, setImportText] = useState('');
   const [mode, setMode] = useState<'merge' | 'replace'>('merge');
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [confirmingClear, setConfirmingClear] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const exportJson = JSON.stringify(buildExport(groupName, players, rules), null, 2);
@@ -166,6 +168,37 @@ export function ImportExportScreen({ onBack }: ImportExportScreenProps) {
         <Button variant="tonal" block icon="upload" disabled={!importText.trim()} onClick={handleImport}>
           Importar texto colado
         </Button>
+      </div>
+
+      <div className="pl-section-title">Zona de risco</div>
+      <div className="pl-card tt-cardpad tt-danger-zone">
+        {confirmingClear ? (
+          <div className="tt-confirm">
+            <span>Excluir todo o elenco ({players.length} jogadores)? Essa ação não pode ser desfeita.</span>
+            <div className="tt-row">
+              <Button variant="outline" onClick={() => setConfirmingClear(false)}>
+                Manter
+              </Button>
+              <button
+                type="button"
+                className="pl-btn tt-btn-del"
+                onClick={() => {
+                  clearPlayers();
+                  setConfirmingClear(false);
+                }}
+              >
+                <span className="pl-icon" aria-hidden="true">
+                  delete_forever
+                </span>
+                Excluir
+              </button>
+            </div>
+          </div>
+        ) : (
+          <Button variant="danger" block icon="delete_forever" onClick={() => setConfirmingClear(true)}>
+            Excluir elenco inteiro
+          </Button>
+        )}
       </div>
 
       {import.meta.env.DEV && (
