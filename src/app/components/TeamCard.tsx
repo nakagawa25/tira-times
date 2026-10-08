@@ -1,6 +1,6 @@
 import React from 'react';
 import type { Player, TeamColor } from '../../domain/types';
-import { teamProfile } from '../../domain/teamProfile';
+import { teamProfile, suggestFillIns } from '../../domain/teamProfile';
 import { rating, formatRating } from '../../domain/rating';
 
 export interface TeamCardProps {
@@ -10,6 +10,13 @@ export interface TeamCardProps {
   goalkeeper?: string | null;
   missing?: number;
   showProfile?: boolean;
+  /** Jogadores dos outros times, candidatos a emprestar pra essa vaga sem desequilibrar o time. */
+  otherTeamsPlayers?: Player[];
+}
+
+function joinNames(names: string[]): string {
+  if (names.length <= 1) return names.join('');
+  return `${names.slice(0, -1).join(', ')} ou ${names[names.length - 1]}`;
 }
 
 const METERS: { key: 'attack' | 'defense' | 'speed' | 'skill'; label: string }[] = [
@@ -23,9 +30,10 @@ function playerTag(p: Player): string {
   return p.positions.join(' · ');
 }
 
-export function TeamCard({ name, color, players, goalkeeper, missing = 0, showProfile = true }: TeamCardProps) {
+export function TeamCard({ name, color, players, goalkeeper, missing = 0, showProfile = true, otherTeamsPlayers = [] }: TeamCardProps) {
   const power = players.length ? players.reduce((a, p) => a + rating(p), 0) / players.length : 0;
   const profile = teamProfile(players);
+  const candidates = missing > 0 ? suggestFillIns(players, otherTeamsPlayers) : [];
 
   return (
     <div className="pl-team">
@@ -87,7 +95,14 @@ export function TeamCard({ name, color, players, goalkeeper, missing = 0, showPr
             <span className="pl-icon" aria-hidden="true">
               person_add
             </span>
-            Vaga aberta — completar com 1 de fora
+            {candidates.length > 0 ? (
+              <span>
+                Vaga aberta — completar com: <b>{joinNames(candidates.map((p) => p.name))}</b>
+                <span className="pl-team-open-hint"> (sugestão, sem desequilibrar o time)</span>
+              </span>
+            ) : (
+              'Vaga aberta — completar com 1 de fora'
+            )}
           </li>
         ))}
       </ul>

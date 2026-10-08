@@ -50,4 +50,18 @@ describe('TeamCard', () => {
     render(<TeamCard name="Time Verde" color="verde" players={[mk('1', 'Dudu', ['DEF'])]} missing={0} />);
     expect(screen.queryByText('Vaga aberta — completar com 1 de fora')).not.toBeInTheDocument();
   });
+
+  it('suggests bench players closest to the team rating instead of the generic open-slot text', () => {
+    render(
+      <TeamCard
+        name="Time Laranja"
+        color="laranja"
+        players={[mk('1', 'Dudu', ['DEF'])]}
+        missing={1}
+        otherTeamsPlayers={[mk('2', 'Caio', ['MEI']), mk('3', 'Bia', ['ATA'])]}
+      />,
+    );
+    expect(screen.getByText('Caio ou Bia')).toBeInTheDocument();
+    expect(screen.queryByText('Vaga aberta — completar com 1 de fora')).not.toBeInTheDocument();
+  });
 });

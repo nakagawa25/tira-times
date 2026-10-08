@@ -66,7 +66,15 @@ export function TimesScreen({ onGoToPresenca }: TimesScreenProps) {
           {describeGoalkeepers(draw)}
         </div>
         {draw.teams.map((team) => (
-          <TeamCard key={team.color} name={team.name} color={team.color} players={team.players} goalkeeper={team.goalkeeper} missing={team.missing} />
+          <TeamCard
+            key={team.color}
+            name={team.name}
+            color={team.color}
+            players={team.players}
+            goalkeeper={team.goalkeeper}
+            missing={team.missing}
+            otherTeamsPlayers={draw.teams.filter((t) => t !== team).flatMap((t) => t.players)}
+          />
         ))}
         {draw.bench.length > 0 && (
           <div className="tt-bench">

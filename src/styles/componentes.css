@@ -133,6 +133,7 @@ span.pl-star { cursor: default; }
 .pl-team-pos { font-size: 11px; font-weight: 800; letter-spacing: .4px; color: var(--ink-muted); }
 .pl-team-list li.pl-team-open { margin: 4px 12px 6px; padding: 8px 10px; border: 1.5px dashed var(--warn-700); border-radius: var(--radius-sm); background: var(--warn-100); color: var(--warn-700); font-size: 13px; font-weight: 700; }
 .pl-team-open .pl-icon { font-size: 18px; }
+.pl-team-open-hint { font-weight: 500; opacity: .8; }
 
 /* App bar */
 .pl-appbar { display: flex; align-items: center; gap: 4px; min-height: 64px; padding: 8px 8px 8px 16px; background: var(--surface-100); }
