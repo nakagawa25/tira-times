@@ -3,7 +3,7 @@ import { planSummary, goalPlan } from './planSummary';
 import { sampleSquad } from './sampleSquad';
 import type { Rules } from './types';
 
-const RULES: Rules = { linePerTeam: 5, teams: 3, goalkeepers: 'fixed', balance: true, traits: true, positions: true, monthlyPriority: true };
+const RULES: Rules = { linePerTeam: 5, teams: 3, goalkeepers: 'fixed', balance: true, traits: true, positions: true, monthlyPriority: true, avoidRepeatPairs: false };
 
 describe('goalPlan', () => {
   it('fixed mode covers up to 2 goalkeepers', () => {

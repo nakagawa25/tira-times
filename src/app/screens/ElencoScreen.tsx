@@ -14,8 +14,7 @@ export interface ElencoScreenProps {
 }
 
 export function ElencoScreen({ onHideNavChange, onOpenPro }: ElencoScreenProps) {
-  const groupName = "Fut de Sexta - Created By: Naka";
-  const setGroupName = useAppStore((s) => s.setGroupName);
+  const groupName = 'Fut de Sexta - Created By: Naka';
   const players = useAppStore((s) => s.players);
   const showRatings = useAppStore((s) => s.showRatings);
   const addPlayer = useAppStore((s) => s.addPlayer);
@@ -105,6 +104,7 @@ export function ElencoScreen({ onHideNavChange, onOpenPro }: ElencoScreenProps) 
           </button>
         </div>
       )}
+      <TextField icon="search" placeholder="Buscar jogador" value={query} onChange={setQuery} />
       {players.length === 0 ? (
         <Empty
           icon="group_add"

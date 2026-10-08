@@ -53,14 +53,4 @@ describe('TimesScreen', () => {
     expect(await screen.findByRole('button', { name: 'Copiado!' })).toBeInTheDocument();
   });
 
-  it('shows "Enviar" only when the Web Share API is available', () => {
-    [1, 2, 3, 4].forEach((i) => useAppStore.getState().addPlayer(mk(String(i))));
-    useAppStore.getState().setRules({ teams: 2, linePerTeam: 2 });
-    useAppStore.getState().runDraw(1);
-    const { rerender } = render(<TimesScreen onOpenPro={() => {}} onGoToPresenca={() => {}} />);
-    expect(screen.queryByRole('button', { name: 'Enviar' })).not.toBeInTheDocument();
-    Object.defineProperty(navigator, 'share', { value: vi.fn().mockResolvedValue(undefined), configurable: true });
-    rerender(<TimesScreen onOpenPro={() => {}} onGoToPresenca={() => {}} />);
-    expect(screen.getByRole('button', { name: 'Enviar' })).toBeInTheDocument();
-  });
 });

@@ -1,7 +1,7 @@
 import type { Player, Position, Rules } from './types';
 
 const VALID_POSITIONS: Position[] = ['GOL', 'DEF', 'ALA', 'MEI', 'ATA', 'QQ'];
-const RULE_KEYS: (keyof Rules)[] = ['linePerTeam', 'teams', 'goalkeepers', 'balance', 'traits', 'positions', 'monthlyPriority'];
+const RULE_KEYS: (keyof Rules)[] = ['linePerTeam', 'teams', 'goalkeepers', 'balance', 'traits', 'positions', 'monthlyPriority', 'avoidRepeatPairs'];
 
 export interface ImportOk {
   ok: true;

@@ -83,6 +83,13 @@ export function RegrasScreen() {
           icon="workspace_premium"
           onChange={(v) => setRules({ monthlyPriority: v })}
         />
+        <MonthlySwitch
+          checked={rules.avoidRepeatPairs}
+          label="Não repetir times"
+          hint="Não repete jogadores no mesmo time, mas nem sempre fica equilibrado"
+          icon="shuffle"
+          onChange={(v) => setRules({ avoidRepeatPairs: v })}
+        />
       </div>
       <div className="pl-section-title">Com {presentPlayers.length} presentes hoje</div>
       <div className="pl-card tt-preview">

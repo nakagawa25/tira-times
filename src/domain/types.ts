@@ -25,6 +25,7 @@ export interface Rules {
   traits: boolean;
   positions: boolean;
   monthlyPriority: boolean;
+  avoidRepeatPairs: boolean;
 }
 
 export const DEFAULT_RULES: Rules = {
@@ -35,6 +36,7 @@ export const DEFAULT_RULES: Rules = {
   traits: true,
   positions: true,
   monthlyPriority: true,
+  avoidRepeatPairs: false,
 };
 
 export type TeamColor = 'verde' | 'azul' | 'laranja' | 'grafite' | 'vermelho' | 'amarelo';

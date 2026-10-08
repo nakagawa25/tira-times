@@ -19,7 +19,7 @@ Tamanhos dos times: distribuição o mais igual possível, times maiores primeir
 
 Cada jogador tem nota `r` (média das 4 habilidades), habilidades `sk[4]`, "especialista" em cada habilidade se ≥ 4, e papéis DEF/MEI/ATA explícitos.
 
-Custo de uma distribuição (menor = melhor), pesos em `W = { role: 30, roleStack: 1.5, avg: 60, trait: 10, spec: 2.5 }`:
+Custo de uma distribuição (menor = melhor), pesos em `W = { role: 30, roleStack: 1.5, avg: 60, trait: 10, spec: 2.5, pairRepeat: 40 }`:
 
 | Camada | Termo | Liga com |
 | --- | --- | --- |
@@ -28,6 +28,7 @@ Custo de uma distribuição (menor = melhor), pesos em `W = { role: 30, roleStac
 | Média | `avg × Σ (média do time − média geral)²` | `balance` |
 | Características | `trait × Σ (média da habilidade no time − média geral da habilidade)²` | `balance && traits` |
 | Características | `spec × Σ (especialistas no time − esperado proporcional)²` | `balance && traits` |
+| Rotatividade | `pairRepeat × Σ contagem²` por dupla no mesmo time | `avoidRepeatPairs` |
 
 Busca:
 1. Ponto de partida: ordena por nota (+ ruído) e distribui em serpentina (1-2-3-3-2-1…) respeitando os tamanhos.
@@ -36,6 +37,12 @@ Busca:
 4. Com `balance` desligado: partida aleatória e só o custo de posições (times aleatórios, mas com DEF/MEI/ATA).
 
 RNG com seed opcional (determinístico para testes). No app, use seed aleatória por sorteio.
+
+### Não repetir times (`rules.avoidRepeatPairs`)
+
+Rotatividade entre sorteios: um histórico temporário em memória (`pairHistory`, no store, não vai pro localStorage) conta quantas vezes cada dupla de jogadores já jogou junta. Com a regra ligada, o custo ganha um termo `pairRepeat × contagem²` por dupla dentro do mesmo time (peso 40) — forte o suficiente pra desequilibrar nota média/características/posições de propósito, por isso é **mutuamente exclusiva** com `balance`/`traits`/`positions` (ligar uma desliga as outras, na UI e em `setRules`). Sem meio-termo: ou prioriza equilíbrio, ou prioriza rotatividade.
+
+O histórico zera quando: a presença muda, `teams`/`linePerTeam` mudam, ou depois de tantos sorteios quanto jogadores presentes (heurística simples pra começar uma rodada nova de rotatividade — ajustar se o uso real mostrar que zera rápido/devagar demais). Enquanto a regra está desligada, nada no histórico é tocado (não gasta o limite).
 
 ## 4. Apresentação
 

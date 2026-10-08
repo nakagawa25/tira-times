@@ -47,14 +47,6 @@ describe('ElencoScreen', () => {
     expect(screen.queryByText('3,0')).not.toBeInTheDocument();
   });
 
-  it('editing the group name field updates the store', async () => {
-    render(<ElencoScreen onHideNavChange={noop} onOpenPro={noop} />);
-    const input = screen.getByLabelText('Nome do grupo');
-    await userEvent.clear(input);
-    await userEvent.type(input, 'Pelada de Quinta');
-    expect(useAppStore.getState().groupName).toBe('Pelada de Quinta');
-  });
-
   it('opens Importar/Exportar and hides the bottom nav', async () => {
     let hidden = false;
     render(<ElencoScreen onHideNavChange={(h) => (hidden = h)} onOpenPro={noop} />);

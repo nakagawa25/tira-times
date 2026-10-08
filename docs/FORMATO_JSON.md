@@ -8,7 +8,7 @@ Schema: `reference/formato.schema.json`. Exemplo completo: `reference/exemplo-ex
   "version": 1,
   "exportedAt": "2026-10-01T20:00:00-03:00",
   "group": { "name": "Pelada de Quinta" },
-  "rules": { "linePerTeam": 5, "teams": 3, "goalkeepers": "fixed", "balance": true, "traits": true, "positions": true, "monthlyPriority": true },
+  "rules": { "linePerTeam": 5, "teams": 3, "goalkeepers": "fixed", "balance": true, "traits": true, "positions": true, "monthlyPriority": true, "avoidRepeatPairs": false },
   "players": [
     { "id": "p01", "name": "Marcão", "positions": ["GOL"], "monthly": true,
       "skills": { "attack": 1, "defense": 4, "speed": 2, "skill": 3 } }

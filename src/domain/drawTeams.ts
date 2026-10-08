@@ -3,7 +3,11 @@ import { SKILL_KEYS, ROLES, TEAM_COLORS } from './types';
 import { rating, isGoalkeeper } from './rating';
 import { goalPlan } from './planSummary';
 
-const W = { role: 30, roleStack: 1.5, avg: 60, trait: 10, spec: 2.5 };
+const W = { role: 30, roleStack: 1.5, avg: 60, trait: 10, spec: 2.5, pairRepeat: 40 };
+
+export function pairKey(a: string, b: string): string {
+  return a < b ? `${a}|${b}` : `${b}|${a}`;
+}
 
 function mulberry32(seed: number) {
   let s = Math.abs(Math.floor(seed)) % 233280 || 1;
@@ -26,7 +30,27 @@ interface PlayerData {
   roles: number[];
 }
 
-export function drawTeams(players: Player[], rules: Rules, seed?: number): DrawResult {
+function partitionKey(ids: string[], assign: number[]): string {
+  const groups = new Map<number, string[]>();
+  for (let i = 0; i < ids.length; i++) {
+    const t = assign[i];
+    const g = groups.get(t) ?? [];
+    g.push(ids[i]);
+    groups.set(t, g);
+  }
+  return Array.from(groups.values())
+    .map((g) => g.slice().sort().join(','))
+    .sort()
+    .join('|');
+}
+
+export function drawTeams(
+  players: Player[],
+  rules: Rules,
+  seed?: number,
+  previous?: DrawResult | null,
+  pairCounts?: Record<string, number>,
+): DrawResult {
   const rnd = seed == null ? Math.random : mulberry32(seed);
   const balance = rules.balance !== false;
   const traits = balance && rules.traits !== false;
@@ -138,6 +162,19 @@ export function drawTeams(players: Player[], rules: Rules, seed?: number): DrawR
         }
       }
     }
+    if (rules.avoidRepeatPairs && pairCounts) {
+      const idsByTeam: string[][] = Array.from({ length: T }, () => []);
+      for (let i = 0; i < N; i++) idsByTeam[assign[i]].push(pool[i].id);
+      for (let t = 0; t < T; t++) {
+        const ids = idsByTeam[t];
+        for (let a = 0; a < ids.length; a++) {
+          for (let b = a + 1; b < ids.length; b++) {
+            const cnt = pairCounts[pairKey(ids[a], ids[b])] ?? 0;
+            c += W.pairRepeat * cnt * cnt;
+          }
+        }
+      }
+    }
     return c;
   }
 
@@ -208,7 +245,15 @@ export function drawTeams(players: Player[], rules: Rules, seed?: number): DrawR
   runs.sort((a, b) => a.cost - b.cost);
   const bestC = runs.length ? runs[0].cost : 0;
   const good = runs.filter((x) => x.cost <= bestC + Math.max(0.4, bestC * 0.15));
-  const pick = good.length ? good[Math.floor(rnd() * good.length)] : { assign: [] as number[], cost: 0 };
+  const poolIds = pool.map((x) => x.id);
+  const previousKey =
+    previous && previous.teams.length ? previous.teams.map((t) => t.players.map((p) => p.id).slice().sort().join(',')).sort().join('|') : null;
+  // Prefer a grouping that differs from the previous draw when one equally-good exists;
+  // never force a worse-cost split just to vary it. See drawTeams.test.ts for the test
+  // showing this avoids "Sortear de novo" repeating the same teams.
+  const varied = previousKey ? good.filter((x) => partitionKey(poolIds, x.assign) !== previousKey) : good;
+  const candidates = varied.length ? varied : good;
+  const pick = candidates.length ? candidates[Math.floor(rnd() * candidates.length)] : { assign: [] as number[], cost: 0 };
 
   const teams: Team[] = [];
   for (let i = 0; i < T; i++) {

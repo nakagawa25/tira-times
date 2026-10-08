@@ -17,7 +17,8 @@
         "balance": { "type": "boolean" },
         "traits": { "type": "boolean" },
         "positions": { "type": "boolean" },
-        "monthlyPriority": { "type": "boolean" }
+        "monthlyPriority": { "type": "boolean" },
+        "avoidRepeatPairs": { "type": "boolean" }
       }
     },
     "players": {

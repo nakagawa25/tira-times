@@ -31,6 +31,23 @@ describe('useAppStore', () => {
     expect(useAppStore.getState().rules.linePerTeam).toBe(5);
   });
 
+  it('turning on avoidRepeatPairs turns off balance/traits/positions', () => {
+    useAppStore.getState().setRules({ avoidRepeatPairs: true });
+    const rules = useAppStore.getState().rules;
+    expect(rules.avoidRepeatPairs).toBe(true);
+    expect(rules.balance).toBe(false);
+    expect(rules.traits).toBe(false);
+    expect(rules.positions).toBe(false);
+  });
+
+  it('turning on balance (or traits/positions) turns off avoidRepeatPairs', () => {
+    useAppStore.getState().setRules({ avoidRepeatPairs: true });
+    useAppStore.getState().setRules({ balance: true });
+    const rules = useAppStore.getState().rules;
+    expect(rules.balance).toBe(true);
+    expect(rules.avoidRepeatPairs).toBe(false);
+  });
+
   it('runDraw only draws players marked present', () => {
     useAppStore.getState().addPlayer(player('1'));
     useAppStore.getState().addPlayer(player('2'));
@@ -55,6 +72,41 @@ describe('useAppStore', () => {
     localStorage.setItem('tira-times', 'not valid json {{{');
     await useAppStore.persist.rehydrate();
     expect(useAppStore.getState().rules).toEqual(DEFAULT_RULES);
+  });
+
+  it('runDraw acumula pairHistory por dupla quando avoidRepeatPairs está ligado', () => {
+    useAppStore.getState().addPlayer(player('1'));
+    useAppStore.getState().addPlayer(player('2'));
+    useAppStore.getState().setRules({ teams: 1, linePerTeam: 2, avoidRepeatPairs: true });
+    useAppStore.getState().runDraw(1);
+    useAppStore.getState().runDraw(2);
+    expect(useAppStore.getState().pairHistory['1|2']).toBe(2);
+    expect(useAppStore.getState().historyDraws).toBe(2);
+  });
+
+  it('runDraw zera pairHistory quando a presença muda', () => {
+    useAppStore.getState().addPlayer(player('1'));
+    useAppStore.getState().addPlayer(player('2'));
+    useAppStore.getState().addPlayer(player('3'));
+    useAppStore.getState().setRules({ teams: 1, linePerTeam: 3, avoidRepeatPairs: true });
+    useAppStore.getState().runDraw(1);
+    useAppStore.getState().togglePresent('3');
+    useAppStore.getState().runDraw(2);
+    expect(useAppStore.getState().pairHistory['1|2']).toBe(1);
+    expect(useAppStore.getState().historyDraws).toBe(1);
+  });
+
+  it('runDraw não conta sorteios pro limite quando avoidRepeatPairs está desligado', () => {
+    useAppStore.getState().addPlayer(player('1'));
+    useAppStore.getState().addPlayer(player('2'));
+    useAppStore.getState().setRules({ teams: 1, linePerTeam: 2, avoidRepeatPairs: false });
+    useAppStore.getState().runDraw(1);
+    useAppStore.getState().runDraw(2);
+    expect(useAppStore.getState().historyDraws).toBe(0);
+    useAppStore.getState().setRules({ avoidRepeatPairs: true });
+    useAppStore.getState().runDraw(3);
+    expect(useAppStore.getState().pairHistory['1|2']).toBe(1);
+    expect(useAppStore.getState().historyDraws).toBe(1);
   });
 
   it('importData with mode "replace" clears presence and the last draw', () => {

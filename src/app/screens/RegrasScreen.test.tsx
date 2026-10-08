@@ -37,6 +37,23 @@ describe('RegrasScreen', () => {
     expect(screen.getByRole('switch', { name: 'Espalhar características' })).toBeDisabled();
   });
 
+  it('turning on "Não repetir times" updates the store and turns off balance/traits/positions', async () => {
+    render(<RegrasScreen />);
+    await userEvent.click(screen.getByRole('switch', { name: 'Não repetir times' }));
+    const rules = useAppStore.getState().rules;
+    expect(rules.avoidRepeatPairs).toBe(true);
+    expect(rules.balance).toBe(false);
+    expect(rules.positions).toBe(false);
+  });
+
+  it('turning "Equilibrar pela nota média" back on turns off "Não repetir times"', async () => {
+    useAppStore.getState().setRules({ avoidRepeatPairs: true });
+    render(<RegrasScreen />);
+    await userEvent.click(screen.getByRole('switch', { name: 'Equilibrar pela nota média' }));
+    expect(useAppStore.getState().rules.balance).toBe(true);
+    expect(useAppStore.getState().rules.avoidRepeatPairs).toBe(false);
+  });
+
   it('shows the real missing count, not a hardcoded 1, when teams are far from full', () => {
     for (let i = 0; i < 6; i++) {
       useAppStore.getState().addPlayer({

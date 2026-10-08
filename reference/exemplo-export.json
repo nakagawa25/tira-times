@@ -12,7 +12,8 @@
     "balance": true,
     "traits": true,
     "positions": true,
-    "monthlyPriority": true
+    "monthlyPriority": true,
+    "avoidRepeatPairs": false
   },
   "players": [
     {
